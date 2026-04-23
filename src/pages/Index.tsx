@@ -1,12 +1,15 @@
 import { useEffect, useMemo, useState } from "react";
 import {
-  ArrowUpRight, ArrowDownRight, ArrowRight, Calendar, Crown, Plus,
+  ArrowUpRight, ArrowDownRight, ArrowRight, Calendar, Crown,
   Scissors, Sparkles, TrendingUp, Users,
 } from "lucide-react";
 import { AnimatedCounter } from "@/components/AnimatedCounter";
 import { RevenueChart } from "@/components/dashboard/RevenueChart";
 import { BookingsTimeline } from "@/components/dashboard/BookingsTimeline";
 import { TopCustomers } from "@/components/dashboard/TopCustomers";
+import { Typewriter } from "@/components/Typewriter";
+import { UserMenu } from "@/components/UserMenu";
+import { NewBookingDialog } from "@/components/NewBookingDialog";
 import { useReveal } from "@/hooks/useReveal";
 import {
   revenueToday, revenueWeek, revenueMonth, weekDelta, stats,
@@ -34,8 +37,15 @@ const Index = () => {
   const positive = weekDelta >= 0;
 
   const marqueeWords = [
-    "Bookings", "Revenue", "Loyalty", "Insights",
-    "Reminders", "Reviews", "Inventory", "Payroll",
+    "BOOKINGS", "REVENUE", "LOYALTY", "INSIGHTS",
+    "REMINDERS", "REVIEWS", "INVENTORY", "PAYROLL",
+  ];
+
+  const heroPhrases = [
+    "LIKE A MAISON",
+    "WITHOUT THE CHAOS",
+    "WITH QUIET PRECISION",
+    "AS A LIVING LEDGER",
   ];
 
   return (
@@ -54,28 +64,25 @@ const Index = () => {
             <Scissors className="h-4 w-4 text-primary-foreground" />
           </div>
           <div className="flex-1 min-w-0">
-            <h1 className="font-display text-xl sm:text-2xl leading-none">
-              maison <span className="italic text-gradient">lumière</span>
+            <h1 className="font-display text-xl sm:text-2xl uppercase leading-none tracking-tight">
+              MAISON <span className="italic text-gradient">LUMIÈRE</span>
             </h1>
             <p className="font-mono text-[10px] tracking-[0.25em] uppercase text-muted-foreground mt-1.5">
-              ledger · bandra west
+              LEDGER · BANDRA WEST
             </p>
           </div>
-          <nav className="hidden md:flex items-center gap-7 text-sm text-muted-foreground">
-            <a href="#overview" className="reveal-link hover:text-foreground transition-colors">overview</a>
-            <a href="#pulse" className="reveal-link hover:text-foreground transition-colors">pulse</a>
-            <a href="#bookings" className="reveal-link hover:text-foreground transition-colors">bookings</a>
+          <nav className="hidden md:flex items-center gap-7 text-xs font-mono uppercase tracking-wider text-muted-foreground">
+            <a href="#overview" className="reveal-link hover:text-foreground transition-colors">OVERVIEW</a>
+            <a href="#pulse" className="reveal-link hover:text-foreground transition-colors">PULSE</a>
+            <a href="#bookings" className="reveal-link hover:text-foreground transition-colors">BOOKINGS</a>
           </nav>
-          <button className="hidden sm:inline-flex items-center gap-2 rounded-full border border-border/60 bg-secondary/40 px-4 py-2 text-xs font-mono uppercase tracking-wider hover:border-primary/50 hover:text-primary-glow transition-all">
-            sign in <ArrowRight className="h-3 w-3" />
-          </button>
+          <UserMenu />
         </div>
       </header>
 
       <main className="space-y-24 sm:space-y-32 pb-32">
-        {/* ===== HERO — Editorial ===== */}
+        {/* ===== HERO ===== */}
         <section id="overview" className="relative pt-12 sm:pt-20">
-          {/* Parallax orbs */}
           <div
             aria-hidden
             className="pointer-events-none absolute -top-20 -right-32 h-[28rem] w-[28rem] rounded-full bg-primary/25 blur-3xl"
@@ -90,50 +97,58 @@ const Index = () => {
           <div className="container relative">
             <div className="flex items-center gap-3 mb-8 animate-fade-in">
               <span className="h-px w-10 bg-gradient-primary" />
-              <span className="marker-num">001 — the salon, digitised</span>
+              <span className="marker-num">001 — THE SALON, DIGITISED</span>
             </div>
 
-            <h2 className="font-display text-[clamp(2.75rem,9vw,8rem)] leading-[0.95] tracking-tight max-w-5xl animate-fade-up">
-              run a salon{" "}
-              <span className="italic text-gradient">like a maison</span>,{" "}
-              not a spreadsheet.
+            <h2 className="font-display text-[clamp(2.75rem,9vw,8rem)] uppercase leading-[0.95] tracking-tight max-w-5xl animate-fade-up">
+              RUN A SALON{" "}
+              <span className="italic text-gradient inline-block min-w-[6ch]">
+                <Typewriter
+                  words={heroPhrases}
+                  typeSpeed={70}
+                  deleteSpeed={35}
+                  pauseAfterType={2000}
+                />
+              </span>
             </h2>
 
             <p
               className="mt-8 max-w-2xl text-base sm:text-lg text-muted-foreground leading-relaxed animate-fade-up"
               style={{ animationDelay: "150ms" }}
             >
-              one quiet ledger for bookings, revenue and loyalty.
-              built for the small businesses that deserve the polish of the big ones.
+              ONE QUIET LEDGER FOR BOOKINGS, REVENUE AND LOYALTY.
+              BUILT FOR THE SMALL BUSINESSES THAT DESERVE THE POLISH OF THE BIG ONES.
             </p>
 
             <div
               className="mt-10 flex flex-wrap items-center gap-4 animate-fade-up"
               style={{ animationDelay: "300ms" }}
             >
-              <button className="group inline-flex items-center gap-2 rounded-full bg-gradient-primary px-6 py-3.5 text-sm font-medium text-primary-foreground shadow-[0_10px_40px_hsl(var(--primary)/0.35)] hover:shadow-[0_10px_60px_hsl(var(--primary)/0.6)] transition-all duration-700">
-                open today's ledger
+              <a
+                href="#pulse"
+                className="group inline-flex items-center gap-2 rounded-full bg-gradient-primary px-6 py-3.5 text-xs font-mono uppercase tracking-widest text-primary-foreground shadow-[0_10px_40px_hsl(var(--primary)/0.35)] hover:shadow-[0_10px_60px_hsl(var(--primary)/0.6)] transition-all duration-700"
+              >
+                OPEN TODAY'S LEDGER
                 <ArrowRight className="h-4 w-4 transition-transform duration-500 group-hover:translate-x-1" />
-              </button>
-              <button className="reveal-link text-sm font-mono uppercase tracking-[0.2em] text-muted-foreground hover:text-foreground transition-colors">
-                read the field notes
-              </button>
+              </a>
+              <a href="#bookings" className="reveal-link text-xs font-mono uppercase tracking-[0.25em] text-muted-foreground hover:text-foreground transition-colors">
+                READ THE FIELD NOTES
+              </a>
             </div>
 
-            {/* Editorial meta strip */}
             <div
               className="mt-16 grid grid-cols-2 sm:grid-cols-4 gap-6 sm:gap-10 border-t border-border/60 pt-8 animate-fade-up"
               style={{ animationDelay: "450ms" }}
             >
               {[
-                { k: "established", v: "mmxxiv" },
-                { k: "chairs", v: "12" },
-                { k: "stylists", v: "08" },
-                { k: "city", v: "mumbai" },
+                { k: "ESTABLISHED", v: "MMXXIV" },
+                { k: "CHAIRS", v: "12" },
+                { k: "STYLISTS", v: "08" },
+                { k: "CITY", v: "MUMBAI" },
               ].map((m) => (
                 <div key={m.k}>
                   <p className="marker-num">{m.k}</p>
-                  <p className="font-display text-2xl sm:text-3xl mt-2 italic">{m.v}</p>
+                  <p className="font-display text-2xl sm:text-3xl mt-2 italic uppercase">{m.v}</p>
                 </div>
               ))}
             </div>
@@ -142,7 +157,7 @@ const Index = () => {
 
         {/* ===== Marquee ===== */}
         <section aria-hidden className="relative border-y border-border/50 bg-background/40 overflow-hidden py-6">
-          <div className="flex whitespace-nowrap animate-marquee gap-12 font-display text-3xl sm:text-5xl text-muted-foreground/70">
+          <div className="flex whitespace-nowrap animate-marquee gap-12 font-display text-3xl sm:text-5xl uppercase text-muted-foreground/70">
             {[...marqueeWords, ...marqueeWords].map((w, i) => (
               <span key={i} className="flex items-center gap-12">
                 <span className={i % 2 ? "italic text-gradient" : ""}>{w}</span>
@@ -152,7 +167,7 @@ const Index = () => {
           </div>
         </section>
 
-        {/* ===== Revenue hero (counter) ===== */}
+        {/* ===== Revenue hero ===== */}
         <section id="pulse" className="container">
           <div className="reveal glass-card rounded-3xl p-6 sm:p-10 relative overflow-hidden">
             <div className="absolute -top-32 -right-24 h-72 w-72 rounded-full bg-primary/25 blur-3xl animate-float-slow" />
@@ -162,9 +177,9 @@ const Index = () => {
               <div>
                 <div className="flex items-center gap-3 mb-4">
                   <span className="h-px w-8 bg-primary" />
-                  <p className="marker-num">002 — revenue · {range.toLowerCase()}</p>
+                  <p className="marker-num">002 — REVENUE · {range.toUpperCase()}</p>
                 </div>
-                <div className="font-display text-[clamp(3.5rem,10vw,8rem)] font-normal tracking-tight leading-[0.9]">
+                <div className="font-display text-[clamp(3.5rem,10vw,8rem)] font-normal tracking-tight leading-[0.9] uppercase">
                   <AnimatedCounter
                     value={value}
                     prefix="₹"
@@ -181,27 +196,26 @@ const Index = () => {
                     }`}
                   >
                     {positive ? <ArrowUpRight className="h-3 w-3" /> : <ArrowDownRight className="h-3 w-3" />}
-                    {Math.abs(weekDelta).toFixed(1)}% wow
+                    {Math.abs(weekDelta).toFixed(1)}% WOW
                   </span>
                   <span className="font-mono text-[11px] uppercase tracking-wider text-muted-foreground">
-                    vs previous week
+                    VS PREVIOUS WEEK
                   </span>
                 </div>
               </div>
 
-              {/* Range toggle */}
               <div className="inline-flex items-center gap-1 rounded-full border border-border/60 bg-background/60 p-1 backdrop-blur-md self-start lg:self-end">
                 {(["Today", "Week", "Month"] as Range[]).map((r) => (
                   <button
                     key={r}
                     onClick={() => setRange(r)}
-                    className={`relative px-5 py-2 text-sm font-mono uppercase tracking-wider rounded-full transition-all duration-700 ${
+                    className={`relative px-5 py-2 text-xs font-mono uppercase tracking-wider rounded-full transition-all duration-700 ${
                       range === r
                         ? "bg-gradient-primary text-primary-foreground shadow-[0_0_20px_hsl(var(--primary)/0.45)]"
                         : "text-muted-foreground hover:text-foreground"
                     }`}
                   >
-                    {r}
+                    {r.toUpperCase()}
                   </button>
                 ))}
               </div>
@@ -213,14 +227,14 @@ const Index = () => {
         <section className="container">
           <div className="flex items-center gap-3 mb-8 reveal">
             <span className="h-px w-8 bg-accent" />
-            <p className="marker-num">003 — at a glance</p>
+            <p className="marker-num">003 — AT A GLANCE</p>
           </div>
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
             {[
-              { label: "bookings today", value: stats.bookingsToday, icon: Calendar, glow: "primary" },
-              { label: "confirmed", value: stats.confirmedToday, icon: Sparkles, glow: "accent" },
-              { label: "customers", value: stats.totalCustomers, icon: Users, glow: "primary" },
-              { label: "vip members", value: stats.vipCount, icon: Crown, glow: "accent" },
+              { label: "BOOKINGS TODAY", value: stats.bookingsToday, icon: Calendar, glow: "primary" },
+              { label: "CONFIRMED", value: stats.confirmedToday, icon: Sparkles, glow: "accent" },
+              { label: "CUSTOMERS", value: stats.totalCustomers, icon: Users, glow: "primary" },
+              { label: "VIP MEMBERS", value: stats.vipCount, icon: Crown, glow: "accent" },
             ].map((s, i) => (
               <div
                 key={s.label}
@@ -239,7 +253,7 @@ const Index = () => {
                     <s.icon className="h-4 w-4" />
                   </div>
                 </div>
-                <p className="font-display text-4xl sm:text-5xl">
+                <p className="font-display text-4xl sm:text-5xl uppercase">
                   <AnimatedCounter value={s.value} duration={1300} />
                 </p>
               </div>
@@ -252,11 +266,11 @@ const Index = () => {
           <div className="lg:col-span-2 reveal glass-card rounded-3xl p-6 sm:p-8">
             <div className="flex items-start justify-between mb-6">
               <div>
-                <p className="marker-num mb-2">004 — revenue pulse</p>
-                <h3 className="font-display text-3xl sm:text-4xl italic">last 30 days</h3>
+                <p className="marker-num mb-2">004 — REVENUE PULSE</p>
+                <h3 className="font-display text-3xl sm:text-4xl italic uppercase">LAST 30 DAYS</h3>
               </div>
               <span className="neon-chip border-primary/40 text-primary-glow bg-primary/10">
-                <TrendingUp className="h-3 w-3" /> live
+                <TrendingUp className="h-3 w-3" /> LIVE
               </span>
             </div>
             <RevenueChart />
@@ -265,8 +279,8 @@ const Index = () => {
           <div className="reveal glass-card rounded-3xl p-6 sm:p-8" style={{ transitionDelay: "150ms" }}>
             <div className="flex items-start justify-between mb-6">
               <div>
-                <p className="marker-num mb-2">005 — patrons</p>
-                <h3 className="font-display text-3xl sm:text-4xl italic">top customers</h3>
+                <p className="marker-num mb-2">005 — PATRONS</p>
+                <h3 className="font-display text-3xl sm:text-4xl italic uppercase">TOP CUSTOMERS</h3>
               </div>
             </div>
             <TopCustomers />
@@ -278,54 +292,46 @@ const Index = () => {
           <div className="reveal glass-card rounded-3xl p-6 sm:p-8">
             <div className="flex items-start justify-between mb-6 flex-wrap gap-3">
               <div>
-                <p className="marker-num mb-2">006 — agenda</p>
-                <h3 className="font-display text-3xl sm:text-4xl italic">today's bookings</h3>
-                <p className="text-sm text-muted-foreground mt-2">
-                  {stats.confirmedToday} confirmed · {stats.bookingsToday - stats.confirmedToday} pending review
+                <p className="marker-num mb-2">006 — AGENDA</p>
+                <h3 className="font-display text-3xl sm:text-4xl italic uppercase">TODAY'S BOOKINGS</h3>
+                <p className="text-sm text-muted-foreground mt-2 uppercase tracking-wider font-mono text-[11px]">
+                  {stats.confirmedToday} CONFIRMED · {stats.bookingsToday - stats.confirmedToday} PENDING REVIEW
                 </p>
               </div>
               <span className="neon-chip border-accent/40 text-accent-glow bg-accent/10">
                 <Calendar className="h-3 w-3" />
-                {new Date().toLocaleDateString("en-IN", { weekday: "short", day: "numeric", month: "short" })}
+                {new Date().toLocaleDateString("en-IN", { weekday: "short", day: "numeric", month: "short" }).toUpperCase()}
               </span>
             </div>
             <BookingsTimeline />
           </div>
         </section>
 
-        {/* ===== Closing editorial line ===== */}
+        {/* ===== Closing manifesto ===== */}
         <section className="container">
           <div className="reveal max-w-3xl">
-            <p className="marker-num mb-6">— a quiet manifesto</p>
-            <p className="font-display text-3xl sm:text-5xl leading-[1.15]">
-              software, when done right, should feel like
-              <span className="italic text-gradient"> a well-kept ledger</span> —
-              measured, beautiful, alive.
+            <p className="marker-num mb-6">— A QUIET MANIFESTO</p>
+            <p className="font-display text-3xl sm:text-5xl leading-[1.15] uppercase">
+              SOFTWARE, WHEN DONE RIGHT, SHOULD FEEL LIKE
+              <span className="italic text-gradient"> A WELL-KEPT LEDGER</span> —
+              MEASURED, BEAUTIFUL, ALIVE.
             </p>
           </div>
         </section>
       </main>
 
-      {/* Footer */}
       <footer className="border-t border-border/50 bg-background/60 backdrop-blur-md">
         <div className="container py-8 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="font-mono text-[11px] uppercase tracking-[0.3em] text-muted-foreground">
-            © mmxxv · maison lumière
+            © MMXXV · MAISON LUMIÈRE
           </p>
           <p className="font-mono text-[11px] uppercase tracking-[0.3em] text-muted-foreground">
-            crafted in mumbai
+            CRAFTED IN MUMBAI
           </p>
         </div>
       </footer>
 
-      {/* Floating Action Button */}
-      <button
-        aria-label="New booking"
-        className="fixed bottom-6 right-6 z-40 group flex items-center gap-2 rounded-full bg-gradient-primary px-5 py-4 font-mono text-xs uppercase tracking-wider text-primary-foreground shadow-[0_10px_40px_hsl(var(--primary)/0.55)] hover:scale-105 hover:shadow-[0_10px_60px_hsl(var(--accent)/0.6)] transition-all duration-700 animate-glow-pulse"
-      >
-        <Plus className="h-4 w-4 transition-transform group-hover:rotate-90 duration-500" />
-        <span className="hidden sm:inline">new booking</span>
-      </button>
+      <NewBookingDialog />
     </div>
   );
 };

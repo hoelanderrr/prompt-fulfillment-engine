@@ -6,37 +6,37 @@
 
 /* ================================================================
    LOCAL BUSINESS DIGITIZER — Dark Luxury Design System
-   Notion × Stripe × Luxury Perfume Ad
+   Chrome Red — Ferrari × Luxury Lacquer
    All colors MUST be HSL.
 ================================================================ */
 
 @layer base {
   :root {
-    /* Core surfaces — near-black luxury */
-    --background: 240 20% 4%;          /* #0a0a0f */
-    --foreground: 280 15% 96%;
+    /* Core surfaces — near-black luxury with warm undertone */
+    --background: 0 15% 4%;             /* #0f0807 */
+    --foreground: 10 15% 96%;
 
-    --card: 250 25% 7%;
-    --card-foreground: 280 15% 96%;
+    --card: 0 20% 7%;
+    --card-foreground: 10 15% 96%;
 
-    --popover: 250 30% 6%;
-    --popover-foreground: 280 15% 96%;
+    --popover: 0 25% 6%;
+    --popover-foreground: 10 15% 96%;
 
-    /* Brand — deep violet */
-    --primary: 262 83% 58%;             /* #7c3aed */
+    /* Brand — bright shiny chrome red */
+    --primary: 0 90% 55%;               /* #f51e1e */
     --primary-foreground: 0 0% 100%;
-    --primary-glow: 270 90% 70%;
+    --primary-glow: 8 100% 68%;         /* bright crimson highlight */
 
-    /* Accent — magenta */
-    --accent: 292 84% 47%;              /* #c026d3 */
+    /* Accent — molten orange-red chrome */
+    --accent: 14 95% 55%;               /* #f5471e */
     --accent-foreground: 0 0% 100%;
-    --accent-glow: 300 90% 65%;
+    --accent-glow: 20 100% 65%;
 
-    --secondary: 250 25% 12%;
-    --secondary-foreground: 280 15% 96%;
+    --secondary: 0 20% 12%;
+    --secondary-foreground: 10 15% 96%;
 
-    --muted: 250 20% 14%;
-    --muted-foreground: 260 10% 65%;
+    --muted: 0 15% 14%;
+    --muted-foreground: 10 8% 65%;
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
@@ -44,28 +44,28 @@
     --success: 152 76% 50%;
     --warning: 38 95% 60%;
 
-    --border: 270 30% 18%;
-    --input: 270 30% 14%;
-    --ring: 262 83% 58%;
+    --border: 0 30% 18%;
+    --input: 0 30% 14%;
+    --ring: 0 90% 55%;
 
     --radius: 1rem;
 
     /* Glass cards */
-    --glass-bg: 260 40% 9% / 0.55;
-    --glass-border: 280 60% 50% / 0.18;
+    --glass-bg: 0 30% 9% / 0.55;
+    --glass-border: 0 80% 55% / 0.22;
 
-    /* Gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(262 83% 58%), hsl(292 84% 47%));
-    --gradient-glow: radial-gradient(circle at 30% 20%, hsl(270 90% 60% / 0.35), transparent 60%);
-    --gradient-mesh: radial-gradient(at 20% 10%, hsl(262 83% 38% / 0.4) 0px, transparent 50%),
-                     radial-gradient(at 80% 0%, hsl(292 84% 40% / 0.35) 0px, transparent 50%),
-                     radial-gradient(at 80% 80%, hsl(280 70% 30% / 0.3) 0px, transparent 50%);
+    /* Gradients — chrome red */
+    --gradient-primary: linear-gradient(135deg, hsl(0 90% 55%), hsl(14 95% 55%));
+    --gradient-glow: radial-gradient(circle at 30% 20%, hsl(0 95% 60% / 0.4), transparent 60%);
+    --gradient-mesh: radial-gradient(at 20% 10%, hsl(0 90% 40% / 0.45) 0px, transparent 50%),
+                     radial-gradient(at 80% 0%, hsl(14 95% 42% / 0.4) 0px, transparent 50%),
+                     radial-gradient(at 80% 80%, hsl(350 70% 30% / 0.35) 0px, transparent 50%);
 
     /* Shadows / glows */
-    --shadow-glow: 0 0 40px hsl(262 83% 58% / 0.35);
-    --shadow-glow-magenta: 0 0 40px hsl(292 84% 50% / 0.4);
-    --shadow-elegant: 0 20px 60px -20px hsl(262 83% 30% / 0.6);
-    --shadow-card: 0 8px 32px hsl(0 0% 0% / 0.4), inset 0 1px 0 hsl(280 60% 70% / 0.06);
+    --shadow-glow: 0 0 40px hsl(0 95% 55% / 0.45);
+    --shadow-glow-magenta: 0 0 40px hsl(14 95% 55% / 0.45);
+    --shadow-elegant: 0 20px 60px -20px hsl(0 95% 35% / 0.6);
+    --shadow-card: 0 8px 32px hsl(0 0% 0% / 0.4), inset 0 1px 0 hsl(0 80% 70% / 0.08);
 
     /* Motion */
     --transition-silky: all 0.5s cubic-bezier(0.22, 1, 0.36, 1);
@@ -111,7 +111,7 @@
   }
 
   .glass-card:hover {
-    border-color: hsl(280 80% 60% / 0.35);
+    border-color: hsl(0 90% 60% / 0.4);
     box-shadow: var(--shadow-card), var(--shadow-glow);
   }
 
@@ -140,8 +140,8 @@
     to { opacity: 1; transform: translateY(0); }
   }
   @keyframes glow-pulse {
-    0%, 100% { box-shadow: 0 0 20px hsl(262 83% 58% / 0.4); }
-    50% { box-shadow: 0 0 40px hsl(292 84% 60% / 0.7); }
+    0%, 100% { box-shadow: 0 0 20px hsl(0 95% 55% / 0.5); }
+    50% { box-shadow: 0 0 40px hsl(14 95% 60% / 0.75); }
   }
   @keyframes shimmer {
     0% { background-position: -200% 0; }
@@ -153,6 +153,6 @@
   /* Scrollbar */
   ::-webkit-scrollbar { width: 8px; height: 8px; }
   ::-webkit-scrollbar-track { background: hsl(var(--background)); }
-  ::-webkit-scrollbar-thumb { background: hsl(270 30% 20%); border-radius: 8px; }
-  ::-webkit-scrollbar-thumb:hover { background: hsl(262 83% 40%); }
+  ::-webkit-scrollbar-thumb { background: hsl(0 30% 22%); border-radius: 8px; }
+  ::-webkit-scrollbar-thumb:hover { background: hsl(0 90% 50%); }
 }

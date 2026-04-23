@@ -13,8 +13,8 @@ export default {
     extend: {
       fontFamily: {
         sans: ['Inter', 'system-ui', 'sans-serif'],
-        display: ['"Archivo Black"', 'Inter', 'sans-serif'],
-        condensed: ['"Archivo Narrow"', 'Inter', 'sans-serif'],
+        display: ['"Instrument Serif"', 'Times New Roman', 'serif'],
+        mono: ['"JetBrains Mono"', 'ui-monospace', 'monospace'],
       },
       colors: {
         border: "hsl(var(--border))",

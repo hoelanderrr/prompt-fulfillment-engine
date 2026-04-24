@@ -19,18 +19,28 @@ const relativeDate = (iso: string) => {
 };
 
 export const TopCustomers = () => {
-  const { user } = useAuth();
+  const { user, isReady } = useAuth();
   const { topCustomers } = useBookings();
 
-  const list = user
-    ? topCustomers.map((c) => ({
-        id: c.id,
-        name: c.name,
-        visits: c.visits,
-        spend: c.spend,
-        lastVisit: relativeDate(c.lastVisit),
-      }))
-    : mockTop;
+  const list = !isReady
+    ? []
+    : user
+      ? topCustomers.map((c) => ({
+          id: c.id,
+          name: c.name,
+          visits: c.visits,
+          spend: c.spend,
+          lastVisit: relativeDate(c.lastVisit),
+        }))
+      : mockTop;
+
+  if (!isReady) {
+    return (
+      <div className="text-center py-10 font-mono text-xs uppercase tracking-widest text-muted-foreground">
+        Loading patrons…
+      </div>
+    );
+  }
 
   if (user && list.length === 0) {
     return (

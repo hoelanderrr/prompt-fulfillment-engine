@@ -27,16 +27,17 @@ const Index = () => {
   const [range, setRange] = useState<Range>("Today");
   const [scrollY, setScrollY] = useState(0);
   const rootRef = useReveal();
-  const { user } = useAuth();
+  const { user, isReady } = useAuth();
   const live = useBookings();
 
-  // Signed-in users see their real data (zeros for new accounts).
-  // Signed-out visitors see the marketing mock data.
-  const revenueToday = user ? live.revenueToday : mockRevenueToday;
-  const revenueWeek = user ? live.revenueWeek : mockRevenueWeek;
-  const revenueMonth = user ? live.revenueMonth : mockRevenueMonth;
-  const weekDelta = user ? live.weekDelta : mockWeekDelta;
-  const stats = user ? live.stats : mockStats;
+  // While auth is initializing, do not fall back to marketing mock data.
+  // That was causing freshly signed-in users to briefly see the demo ledger.
+  const showMockData = !isReady ? false : !user;
+  const revenueToday = showMockData ? mockRevenueToday : live.revenueToday;
+  const revenueWeek = showMockData ? mockRevenueWeek : live.revenueWeek;
+  const revenueMonth = showMockData ? mockRevenueMonth : live.revenueMonth;
+  const weekDelta = showMockData ? mockWeekDelta : live.weekDelta;
+  const stats = showMockData ? mockStats : live.stats;
 
   useEffect(() => {
     const onScroll = () => setScrollY(window.scrollY);

@@ -48,7 +48,7 @@ export const useBookings = () => {
   useEffect(() => {
     if (!user) return;
     const channel = supabase
-      .channel(`bookings:${user.id}`)
+      .channel(`bookings:${user.id}:${Math.random().toString(36).slice(2)}`)
       .on(
         "postgres_changes",
         { event: "*", schema: "public", table: "bookings", filter: `user_id=eq.${user.id}` },

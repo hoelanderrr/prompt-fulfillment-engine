@@ -20,8 +20,16 @@ const formatTime = (t: string) => {
 };
 
 export const BookingsTimeline = () => {
-  const { user } = useAuth();
+  const { user, isReady } = useAuth();
   const { todayBookings, loading, deleteBooking, updateStatus } = useBookings();
+
+  if (!isReady) {
+    return (
+      <div className="text-center py-12 font-mono text-xs uppercase tracking-widest text-muted-foreground">
+        Loading ledger…
+      </div>
+    );
+  }
 
   // Signed out: keep the marketing mock view
   if (!user) {

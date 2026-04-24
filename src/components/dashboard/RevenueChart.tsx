@@ -7,10 +7,10 @@ const fmt = (n: number) =>
   n >= 1000 ? `₹${(n / 1000).toFixed(1)}k` : `₹${n}`;
 
 export const RevenueChart = () => {
-  const { user } = useAuth();
+  const { user, isReady } = useAuth();
   const { revenueHistory } = useBookings();
 
-  const data = user ? revenueHistory : mockHistory.slice(-30);
+  const data = !isReady ? [] : user ? revenueHistory : mockHistory.slice(-30);
 
   return (
     <div className="h-64 sm:h-72 w-full">

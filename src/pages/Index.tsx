@@ -11,8 +11,14 @@ import { Typewriter } from "@/components/Typewriter";
 import { UserMenu } from "@/components/UserMenu";
 import { NewBookingDialog } from "@/components/NewBookingDialog";
 import { useReveal } from "@/hooks/useReveal";
+import { useAuth } from "@/contexts/AuthContext";
+import { useBookings } from "@/hooks/useBookings";
 import {
-  revenueToday, revenueWeek, revenueMonth, weekDelta, stats,
+  revenueToday as mockRevenueToday,
+  revenueWeek as mockRevenueWeek,
+  revenueMonth as mockRevenueMonth,
+  weekDelta as mockWeekDelta,
+  stats as mockStats,
 } from "@/lib/mockData";
 
 type Range = "Today" | "Week" | "Month";
@@ -21,6 +27,16 @@ const Index = () => {
   const [range, setRange] = useState<Range>("Today");
   const [scrollY, setScrollY] = useState(0);
   const rootRef = useReveal();
+  const { user } = useAuth();
+  const live = useBookings();
+
+  // Signed-in users see their real data (zeros for new accounts).
+  // Signed-out visitors see the marketing mock data.
+  const revenueToday = user ? live.revenueToday : mockRevenueToday;
+  const revenueWeek = user ? live.revenueWeek : mockRevenueWeek;
+  const revenueMonth = user ? live.revenueMonth : mockRevenueMonth;
+  const weekDelta = user ? live.weekDelta : mockWeekDelta;
+  const stats = user ? live.stats : mockStats;
 
   useEffect(() => {
     const onScroll = () => setScrollY(window.scrollY);
@@ -32,7 +48,7 @@ const Index = () => {
     if (range === "Today") return revenueToday;
     if (range === "Week") return revenueWeek;
     return revenueMonth;
-  }, [range]);
+  }, [range, revenueToday, revenueWeek, revenueMonth]);
 
   const positive = weekDelta >= 0;
 

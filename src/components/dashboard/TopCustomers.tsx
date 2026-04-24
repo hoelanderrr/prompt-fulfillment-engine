@@ -1,14 +1,51 @@
 import { Crown, Sparkles } from "lucide-react";
-import { topCustomers } from "@/lib/mockData";
+import { useAuth } from "@/contexts/AuthContext";
+import { useBookings } from "@/hooks/useBookings";
+import { topCustomers as mockTop } from "@/lib/mockData";
 import { AnimatedCounter } from "@/components/AnimatedCounter";
 
 const initials = (name: string) =>
   name.split(" ").map(n => n[0]).slice(0, 2).join("").toUpperCase();
 
+const relativeDate = (iso: string) => {
+  const d = new Date(iso);
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const diff = Math.round((today.getTime() - d.getTime()) / (1000 * 60 * 60 * 24));
+  if (diff <= 0) return "Today";
+  if (diff === 1) return "Yesterday";
+  if (diff < 7) return `${diff} days ago`;
+  return d.toLocaleDateString("en-IN", { day: "2-digit", month: "short" });
+};
+
 export const TopCustomers = () => {
+  const { user } = useAuth();
+  const { topCustomers } = useBookings();
+
+  const list = user
+    ? topCustomers.map((c) => ({
+        id: c.id,
+        name: c.name,
+        visits: c.visits,
+        spend: c.spend,
+        lastVisit: relativeDate(c.lastVisit),
+      }))
+    : mockTop;
+
+  if (user && list.length === 0) {
+    return (
+      <div className="text-center py-10 border border-dashed border-border/60 rounded-2xl">
+        <p className="font-display text-2xl uppercase italic text-muted-foreground">No patrons yet</p>
+        <p className="font-mono text-[11px] uppercase tracking-widest text-muted-foreground mt-2">
+          Add bookings to build your top list
+        </p>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-3">
-      {topCustomers.map((c, i) => {
+      {list.map((c, i) => {
         const isVip = c.spend >= 10000;
         return (
           <div

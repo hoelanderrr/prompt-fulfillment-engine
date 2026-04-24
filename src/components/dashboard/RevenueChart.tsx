@@ -1,12 +1,17 @@
 import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
-import { revenueHistory } from "@/lib/mockData";
-
-const data = revenueHistory.slice(-30);
+import { useAuth } from "@/contexts/AuthContext";
+import { useBookings } from "@/hooks/useBookings";
+import { revenueHistory as mockHistory } from "@/lib/mockData";
 
 const fmt = (n: number) =>
   n >= 1000 ? `₹${(n / 1000).toFixed(1)}k` : `₹${n}`;
 
 export const RevenueChart = () => {
+  const { user } = useAuth();
+  const { revenueHistory } = useBookings();
+
+  const data = user ? revenueHistory : mockHistory.slice(-30);
+
   return (
     <div className="h-64 sm:h-72 w-full">
       <ResponsiveContainer width="100%" height="100%">

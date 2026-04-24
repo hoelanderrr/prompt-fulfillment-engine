@@ -10,6 +10,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { useAuth } from "@/contexts/AuthContext";
+import { useBookings } from "@/hooks/useBookings";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
@@ -18,13 +19,20 @@ const services = [
   "Beard Sculpt", "Keratin Treatment", "Massage Therapy", "Bridal Package",
 ];
 
+const today = () => new Date().toISOString().slice(0, 10);
+
 export const NewBookingDialog = () => {
   const { user } = useAuth();
+  const { addBooking } = useBookings();
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [customer, setCustomer] = useState("");
   const [service, setService] = useState(services[0]);
+  const [date, setDate] = useState(today());
   const [time, setTime] = useState("");
+  const [price, setPrice] = useState<string>("");
+  const [status, setStatus] = useState<"pending" | "confirmed">("pending");
+  const [notes, setNotes] = useState("");
   const [submitting, setSubmitting] = useState(false);
 
   const handleOpenChange = (next: boolean) => {
@@ -36,16 +44,38 @@ export const NewBookingDialog = () => {
     setOpen(next);
   };
 
+  const reset = () => {
+    setCustomer("");
+    setDate(today());
+    setTime("");
+    setPrice("");
+    setStatus("pending");
+    setNotes("");
+  };
+
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
+    if (!user) return;
     setSubmitting(true);
-    // demo only — would persist to a `bookings` table in a real build
-    await new Promise((r) => setTimeout(r, 600));
-    toast.success(`Booked ${customer || "guest"} for ${service} at ${time || "today"}`);
-    setCustomer("");
-    setTime("");
-    setSubmitting(false);
-    setOpen(false);
+    try {
+      await addBooking({
+        customer_name: customer.trim(),
+        service,
+        booking_date: date,
+        booking_time: time || "12:00",
+        price: Number(price) || 0,
+        status,
+        notes: notes.trim() || undefined,
+      });
+      toast.success(`Booked ${customer || "guest"} for ${service}`);
+      reset();
+      setOpen(false);
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : "Failed to save booking";
+      toast.error(msg);
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -60,13 +90,13 @@ export const NewBookingDialog = () => {
         </button>
       </DialogTrigger>
 
-      <DialogContent className="sm:max-w-md glass-card border-border/60">
+      <DialogContent className="sm:max-w-md glass-card border-border/60 max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-muted-foreground">— NEW ENTRY</p>
           <DialogTitle className="font-display text-3xl uppercase tracking-tight">
             ADD A <span className="italic text-gradient">BOOKING</span>
           </DialogTitle>
-          <DialogDescription>Quick draft — saves to today's ledger.</DialogDescription>
+          <DialogDescription>Saved to your private ledger.</DialogDescription>
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="space-y-4 mt-2">
@@ -80,26 +110,76 @@ export const NewBookingDialog = () => {
               className="mt-1.5 w-full rounded-xl border border-border bg-input/40 px-4 py-2.5 text-sm focus:outline-none focus:border-primary/60 focus:ring-2 focus:ring-primary/30"
             />
           </div>
+
+          <div>
+            <label className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">SERVICE</label>
+            <select
+              value={service}
+              onChange={(e) => setService(e.target.value)}
+              className="mt-1.5 w-full rounded-xl border border-border bg-input/40 px-3 py-2.5 text-sm focus:outline-none focus:border-primary/60"
+            >
+              {services.map((s) => <option key={s}>{s}</option>)}
+            </select>
+          </div>
+
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">SERVICE</label>
-              <select
-                value={service}
-                onChange={(e) => setService(e.target.value)}
+              <label className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">DATE</label>
+              <input
+                type="date"
+                required
+                value={date}
+                onChange={(e) => setDate(e.target.value)}
                 className="mt-1.5 w-full rounded-xl border border-border bg-input/40 px-3 py-2.5 text-sm focus:outline-none focus:border-primary/60"
-              >
-                {services.map((s) => <option key={s}>{s}</option>)}
-              </select>
+              />
             </div>
             <div>
               <label className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">TIME</label>
               <input
                 type="time"
+                required
                 value={time}
                 onChange={(e) => setTime(e.target.value)}
                 className="mt-1.5 w-full rounded-xl border border-border bg-input/40 px-3 py-2.5 text-sm focus:outline-none focus:border-primary/60"
               />
             </div>
+          </div>
+
+          <div className="grid grid-cols-2 gap-3">
+            <div>
+              <label className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">PRICE (₹)</label>
+              <input
+                type="number"
+                min="0"
+                step="1"
+                value={price}
+                onChange={(e) => setPrice(e.target.value)}
+                placeholder="0"
+                className="mt-1.5 w-full rounded-xl border border-border bg-input/40 px-3 py-2.5 text-sm focus:outline-none focus:border-primary/60"
+              />
+            </div>
+            <div>
+              <label className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">STATUS</label>
+              <select
+                value={status}
+                onChange={(e) => setStatus(e.target.value as "pending" | "confirmed")}
+                className="mt-1.5 w-full rounded-xl border border-border bg-input/40 px-3 py-2.5 text-sm focus:outline-none focus:border-primary/60"
+              >
+                <option value="pending">Pending</option>
+                <option value="confirmed">Confirmed</option>
+              </select>
+            </div>
+          </div>
+
+          <div>
+            <label className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">NOTES</label>
+            <textarea
+              value={notes}
+              onChange={(e) => setNotes(e.target.value)}
+              rows={2}
+              placeholder="Optional"
+              className="mt-1.5 w-full rounded-xl border border-border bg-input/40 px-3 py-2.5 text-sm focus:outline-none focus:border-primary/60 resize-none"
+            />
           </div>
 
           <DialogFooter>

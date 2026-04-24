@@ -97,11 +97,11 @@ const Index = () => {
           <div className="container relative">
             <div className="flex items-center gap-3 mb-8 animate-fade-in">
               <span className="h-px w-10 bg-gradient-primary" />
-              <span className="marker-num">001 — THE SALON, DIGITISED</span>
+              <span className="marker-num">001 — THE SHOP, DIGITISED</span>
             </div>
 
             <h2 className="font-display text-[clamp(2.75rem,9vw,8rem)] uppercase leading-[0.95] tracking-tight max-w-5xl animate-fade-up">
-              RUN A SALON{" "}
+              RUN A SHOP{" "}
               <span className="italic text-gradient inline-block min-w-[6ch]">
                 <Typewriter
                   words={heroPhrases}
